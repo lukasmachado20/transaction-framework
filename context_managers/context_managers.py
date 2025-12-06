@@ -16,11 +16,13 @@ class SQLite:
     def __enter__(self):
         logger.info("Returning cursor connection...")
         return self.connection.cursor()
-    
+
+   # When out of context scope the __exit__ is triggered  
     def __exit__(self, exc_type, exc_value, traceback):
         logger.info("Finishing connection!")
         self.connection.commit()
         self.connection.close()
+        return True # returning True on __exit__ method say to python that we don't care about the error, then supress the error.
 
 @contextmanager
 def open_db(file_name: str):
